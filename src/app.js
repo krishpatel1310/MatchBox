@@ -1,29 +1,27 @@
 const express = require("express");
-
+const connectDB = require("./config/database");
 const app = express();
+const User = require("./models/user");
 
-app.use("/", (err, req, res, next) => {
-  if (err) {
-    res.status(500).send("Something went wrong");
-  }
+app.post("/signup", async (req, res) => {
+  const user = new User({
+    firstName: "abc",
+    lastName: "xyz",
+    emailId: "abc@xyz.com",
+    password: "abc@123",
+  });
+
+  await user.save();
+  res.send("User added Successfully!");
 });
 
-app.get("/getUserData", (req, res) => {
-  //try
-
-  throw new error("asldjfik");
-  res.end("User Data Sent");
-  //  } catch (err) {
-  //  res.status(500).send("Some Error Contact support team");
-  //}
-});
-
-app.use("/", (err, req, res, next) => {
-  if (err) {
-    res.status(500).send("Something went wrong");
-  }
-});
-
-app.listen(1818, () => {
-  console.log("Server is successfully listing to port 1818....");
-});
+connectDB()
+  .then(() => {
+    console.log("Database Connection established!...");
+    app.listen(1818, () => {
+      console.log("Server is successfully listing to port 1818....");
+    });
+  })
+  .catch((err) => {
+    console.error("Database Connection established!...");
+  });
